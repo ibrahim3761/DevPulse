@@ -1,7 +1,7 @@
 import app from "./app";
 import { initDB } from "./db";
 
-const port = 5000;
+const port = process.env.PORT;
 
 const main = () => {
   initDB();
