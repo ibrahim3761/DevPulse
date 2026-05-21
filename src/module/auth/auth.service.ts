@@ -5,15 +5,21 @@ import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../../config";
 import dbQuery from "../../utility/queryHelpers";
 
-
 const signUp = async (payload: IAuth) => {
   const { email, password, name, role } = payload;
+  
+  if (!name || !email || !password) {
+    throw new AppError(
+      "Bad Request",
+      400,
+      "Name, email and password are required",
+    );
+  }
 
   //Check if user already exists
-  const existingUser = await dbQuery(
-    `SELECT id FROM users WHERE email = $1`,
-    [email],
-  );
+  const existingUser = await dbQuery(`SELECT id FROM users WHERE email = $1`, [
+    email,
+  ]);
 
   if (existingUser.rowCount! > 0) {
     throw new AppError(
@@ -52,7 +58,11 @@ const logIn = async (payload: IAuth) => {
   // Compare provided password with hashed password
   const matchPassword = await bcrypt.compare(password, user.password);
   if (!matchPassword) {
-    throw new AppError("Invalid password", 401, "The password you entered is incorrect");
+    throw new AppError(
+      "Invalid password",
+      401,
+      "The password you entered is incorrect",
+    );
   }
 
   // Gererate JWT token
@@ -68,7 +78,7 @@ const logIn = async (payload: IAuth) => {
   });
 
   delete user.password;
-  return{ token ,user}
+  return { token, user };
 };
 
 export const authService = {
