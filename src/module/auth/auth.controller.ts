@@ -16,9 +16,9 @@ const signUp = async (req: Request, res: Response) => {
     const err = error as ICatchError;
     sendResponse(res, {
       statusCode: err.statusCode ?? 500,
-      success: err.success,
-      message: err.message,
-      error: err.detail,
+      success: false,
+      message: err.message ?? "Something went wrong",
+      errors: err.detail,
     });
   }
 };
@@ -35,9 +35,9 @@ const logIn = async (req: Request, res: Response) => {
     const err = error as ICatchError;
     sendResponse(res, {
       statusCode: err.statusCode ?? 500,
-      success: err.success,
-      message: err.message,
-      error: err.detail,
+      success: false,
+      message: err.message ?? "Something went wrong",
+      errors: err.detail,
     });
   }
 };

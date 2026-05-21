@@ -1,6 +1,5 @@
 import bcrypt from "bcrypt";
 import type { IAuth } from "./auth.interface";
-import { pool } from "../../db";
 import AppError from "../../utility/AppError";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../../config";

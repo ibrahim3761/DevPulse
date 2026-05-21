@@ -7,7 +7,7 @@ const app : Application = express()
 app.use(express.json())
 
 app.use('/api/auth', authRoute)
-app.use('api/issues', issuesRouter)
+app.use('/api/issues', issuesRouter)
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
