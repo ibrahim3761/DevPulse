@@ -3,19 +3,42 @@ import sendResponse from "../../utility/sendResponse";
 import type { ICatchError } from "../../utility/AppError";
 import { issuesService } from "./issues.service";
 
+const getAllIssues = async (req: Request, res: Response) => {
+  try {
+    const result = await issuesService.getAllIssuesFromDB(
+      req.query,
+    );
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Issues fetched successfully",
+      data: result,
+    });
+  } catch (error) {
+    const err = error as ICatchError;
+    sendResponse(res, {
+      statusCode: err.statusCode ?? 500,
+      success: false,
+      message: err.message ?? "Something went wrong",
+      errors: err.detail,
+    });
+  }
+};
 const createIssue = async (req: Request, res: Response) => {
   try {
     console.log(req.user.id);
-    
-    const result = await issuesService.createIssueIntoDB({...req.body , reporter_id: req.user.id,});
+
+    const result = await issuesService.createIssueIntoDB({
+      ...req.body,
+      reporter_id: req.user.id,
+    });
     sendResponse(res, {
       statusCode: 201,
       success: true,
       message: "Issue created successfully",
       data: result.rows,
     });
-  } 
-  catch (error) {
+  } catch (error) {
     const err = error as ICatchError;
     sendResponse(res, {
       statusCode: err.statusCode ?? 500,
@@ -28,4 +51,5 @@ const createIssue = async (req: Request, res: Response) => {
 
 export const issuesController = {
   createIssue,
+  getAllIssues,
 };
