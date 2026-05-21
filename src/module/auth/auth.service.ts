@@ -4,13 +4,14 @@ import { pool } from "../../db";
 import AppError from "../../utility/AppError";
 import jwt, { type JwtPayload } from "jsonwebtoken";
 import config from "../../config";
+import dbQuery from "../../utility/queryHelpers";
 
 
 const signUp = async (payload: IAuth) => {
   const { email, password, name, role } = payload;
 
   //Check if user already exists
-  const existingUser = await pool.query(
+  const existingUser = await dbQuery(
     `SELECT id FROM users WHERE email = $1`,
     [email],
   );
@@ -25,7 +26,7 @@ const signUp = async (payload: IAuth) => {
 
   const hashPassword = await bcrypt.hash(password, 10);
 
-  const result = await pool.query(
+  const result = await dbQuery(
     `INSERT INTO users(name,email,password,role)
        VALUES($1,$2,$3, COALESCE($4,'contributor'))
        RETURNING *
@@ -39,7 +40,7 @@ const signUp = async (payload: IAuth) => {
 const logIn = async (payload: IAuth) => {
   const { email, password } = payload;
   // Check if the user exists in the database
-  const userData = await pool.query(`SELECT * FROM users WHERE email = $1`, [
+  const userData = await dbQuery(`SELECT * FROM users WHERE email = $1`, [
     email,
   ]);
 

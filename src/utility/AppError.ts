@@ -12,3 +12,10 @@ class AppError extends Error {
 }
 
 export default AppError;
+
+export interface ICatchError{
+  message: string;
+  statusCode: number;
+  success: boolean;
+  detail?: string | undefined;
+}
