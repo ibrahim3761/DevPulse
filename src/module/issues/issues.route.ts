@@ -10,6 +10,10 @@ router.get("/", issuesController.getAllIssues);
 router.get("/:id", issuesController.getSingleIssue);
 // Issue craete route
 router.post('/',auth(User_role.maintainer, User_role.contributor), issuesController.createIssue)
+// Issue update roue
+router.patch("/:id",auth(User_role.maintainer, User_role.contributor), issuesController.updateIssue)
+// Issue delete route
+router.delete("/:id", auth(User_role.maintainer), issuesController.deleteIssue)
 
 
 

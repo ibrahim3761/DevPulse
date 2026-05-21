@@ -1,12 +1,19 @@
 export interface IIssue {
-    "title" : string,
-    "description" : string,
-    "type" : string,
-    "reporter_id" : number
+  title: string;
+  description: string;
+  type: string;
+  reporter_id: number;
 }
 
 export interface IIssueQuery {
   sort?: "newest" | "oldest";
   type?: "bug" | "feature_request";
   status?: "open" | "in_progress" | "resolved";
+}
+
+export interface IIsserUpdate {
+  title?: string;
+  description?: string;
+  type?: string;
+  status?: string;
 }

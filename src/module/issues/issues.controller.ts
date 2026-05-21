@@ -74,8 +74,57 @@ const createIssue = async (req: Request, res: Response) => {
   }
 };
 
+//Update issue req&res handler
+const updateIssue = async (req: Request, res: Response) => {
+  try {
+    const result = await issuesService.updateIssueIntoDB(
+      req.params.id as string,
+      req.body,
+      req.user.id as string,       
+      req.user.role as string,     
+    );
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Issue updated successfully",
+      data: result,
+    });
+  } catch (error) {
+    const err = error as ICatchError;
+    sendResponse(res, {
+      statusCode: err.statusCode ?? 500,
+      success: false,
+      message: err.message ?? "Something went wrong",
+      errors: err.detail,
+    });
+  }
+};
+
+// Delete issue req&res handler
+const deleteIssue = async (req: Request, res: Response) => {
+  try {
+    const{id} = req.params
+    await issuesService.deleteIssueFromDB(id as string);
+    sendResponse(res, {
+      statusCode: 200,
+      success: true,
+      message: "Issue deleted successfully",
+    });
+  } catch (error) {
+    const err = error as ICatchError;
+    sendResponse(res, {
+      statusCode: err.statusCode ?? 500,
+      success: false,
+      message: err.message ?? "Something went wrong",
+      errors: err.detail,
+    });
+  }
+};
+
 export const issuesController = {
   createIssue,
   getAllIssues,
-  getSingleIssue
+  getSingleIssue,
+  updateIssue,
+  deleteIssue
 };
