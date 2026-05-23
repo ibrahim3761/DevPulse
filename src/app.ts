@@ -10,7 +10,7 @@ app.use('/api/auth', authRoute)
 app.use('/api/issues', issuesRouter)
 
 app.get('/', (req, res) => {
-  res.send('Hello World!')
+  res.send('Welcome to Dev pulse!!')
 })
 
 export default app
